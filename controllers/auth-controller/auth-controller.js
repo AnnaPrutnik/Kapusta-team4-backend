@@ -8,4 +8,4 @@ class AuthController {
   async logOutUser() {}
 }
 
-export const authController = new AuthController();
+export default AuthController;
