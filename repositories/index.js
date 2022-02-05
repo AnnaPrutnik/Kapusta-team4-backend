@@ -1,2 +1,6 @@
-export { UserRepository } from './user-repository/user-repository';
-export { AbstractRepository } from './abstract-repository/abstract-repository';
+import { User } from '../models';
+import { UserRepository } from './user-repository/user-repository';
+
+const userRepository = new UserRepository(User);
+
+export { userRepository };
