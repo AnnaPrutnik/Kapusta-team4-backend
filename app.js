@@ -20,8 +20,11 @@ app.use((req, res) => {
 });
 
 app.use((err, req, res, next) => {
-  const params = req.params;
-  res.status(500).json({ params, message: err.message });
+  res.status(err.status).json({ message: err.message });
+
+  if (!err.status) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 export default app;
