@@ -1,0 +1,405 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Kapusta API",
+    "description": "Kapusta API documentation",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [
+    { 
+      "url": "http://localhost:3000" 
+    },
+    {
+      "url": "https://ссылка_на.herokuapp.com/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "Transactions",
+      "description": "Transactions endpoints"
+    },
+    {
+      "name": "Statistics",
+      "description": "Statistics endpoints"
+    }
+  ],
+  "paths": {
+    "api/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User registration",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Registration's object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUser"
+              },
+              "example": {
+                "email": "1@mail.com",
+                "password": "12345678"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "code": 201,
+                    "data": {
+                      "user": {
+                        "id": "1",
+                        "email": "1@mail.com"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (invalid request body)"
+          },
+          "409": {
+            "status": "error",
+            "code": 409,
+            "description": "Email is already exist"
+          }
+        }
+      }
+    },
+    "api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User login",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationResponse"
+              },
+              "example": {
+                "email": "1@mail.com",
+                "password": "12345678"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "code": 200,
+                    "data": {
+                      "token": "eyJhbGcJIUzI1N5cCI9.eyJfaWQiOiI2MWU3MjFjDgxZiOjE.yCUUpXPEYUuX4Ggj51W0",
+                      "user": {
+                        "email": "1@mail.com"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "api/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "User logout",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationResponse"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "code": 200,
+                    "data": { }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/transactions/balance": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Get transactions balance",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "api/transactions/income": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get transactions income",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportsBalanceResponse"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "api/transactions/expense": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Get adding expense",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportsBalanceResponse"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "api/transactions/:transactionId": {
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Delete transaction id",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportsBalanceResponse"
+              }
+            }
+          }
+        },
+        "200": {
+          "description": "Transaction is deleted",
+          "content": {
+            "application/json": {
+              "example": {
+                "status": "success",
+                "code": 200,
+                "message": "transaction deleted",
+                "result": {
+                  "date": {
+                    "day": "day",
+                    "month": "month",
+                    "year": "year"
+                  },
+                  "_id": "id",
+                  "type": "type",
+                  "amount": 77777,
+                  "category": "food",
+                  "balance": 777,
+                  "owner": "",
+                  "createdAt": "createdAt",
+                  "updatedAt": "updatedAt"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Transaction not found"
+          }
+        }
+      }
+    },
+    "api/statistics/expenses": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get summary of the months of the current year by expenses",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportsBalanceResponse"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "api/statistics/income": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get summary of the months of the current year by income",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportsBalanceResponse"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "api/statistics/custom": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get detailed information about expenses and income for a specific month and year ",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportsBalanceResponse"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email"
+            },
+            "userId": {
+              "type": "integer",
+              "description": "User's id",
+              "example": "32143232436545474"
+            }
+          }
+        },
+        "example": [
+          { "email": "1@mail.com", "userId": "1" },
+          { "email": "2@mail.com", "userId": "2" }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
