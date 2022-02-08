@@ -1,9 +1,7 @@
 export class UserService {
-  #repository;
+  repository;
 
   constructor(repository) {
-    this.#repository = repository;
+    this.repository = repository;
   }
-
-  async createUser(data) {}
 }

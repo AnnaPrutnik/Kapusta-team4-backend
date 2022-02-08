@@ -1,7 +1,7 @@
 export class AuthService {
-  #repository;
+  repository;
 
   constructor(repository) {
-    this.#repository = repository;
+    this.repository = repository;
   }
 }
