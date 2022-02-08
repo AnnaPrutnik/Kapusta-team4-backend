@@ -1,3 +1,6 @@
+import jwt from 'jsonwebtoken';
+
+const JWT_KEY = process.env.JWT_SECRET_KEY;
 export class AuthService {
   repository;
 
@@ -14,4 +17,13 @@ export class AuthService {
       console.error(`Error on creating new User: ${error.message}`);
     }
   }
+
+  async getToken(user) {
+    const { id, email } = user;
+    const token = jwt.sign({ id, email }, JWT_KEY, { expiresIn: '8h' });
+    console.log(token);
+    return token;
+  }
+
+  async setToken() {}
 }
