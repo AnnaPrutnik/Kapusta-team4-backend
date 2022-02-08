@@ -4,6 +4,8 @@ Repository for backend for team project: team 4
 
 ## Endpoints
 
+- `/api-docs` swagger
+
 - `api/auth`
   - `/signup` энд-поинт регистрации
   - `/login` энд-поинт аутентификации
