@@ -22,9 +22,35 @@ class AuthController {
     });
   }
 
-  async logInUser(req, res, next) {}
+  async logInUser(req, res, next) {
+    const { email, password } = req.body;
+    const user = await userService.isUserValid(email, password);
 
-  async logOutUser(req, res, next) {}
+    if (!user) {
+      return next(createError(401, 'Bad Credentials'));
+    }
+
+    const token = authService.getToken(user);
+    await authService.setToken(user.id, token);
+
+    res.status(200).json({
+      status: 'success',
+      code: 200,
+      data: {
+        token,
+        email: user.email,
+      },
+    });
+  }
+
+  async logOutUser(req, res, next) {
+    await authService.setToken(user.id, null);
+
+    res.status(204).json({
+      status: 'success',
+      code: 204,
+    });
+  }
 }
 
 export default AuthController;
