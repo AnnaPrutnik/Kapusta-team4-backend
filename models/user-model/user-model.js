@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { randomUUID } from 'crypto';
 
 const { Schema, model } = mongoose;
 
@@ -10,7 +11,7 @@ const userSchema = new Schema(
     },
     lastName: {
       type: String,
-      default: 'John',
+      default: 'McClane',
     },
     email: {
       type: String,
@@ -21,6 +22,28 @@ const userSchema = new Schema(
           /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/;
         return re.test(String(value).trim().toLowerCase());
       },
+    },
+    password: {
+      type: String,
+    },
+    verifyToken: {
+      type: String,
+      default: randomUUID,
+    },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    token: {
+      type: String,
+      default: null,
+    },
+    isFirstLogin: {
+      type: Boolean,
+      default: true,
+    },
+    balance: {
+      type: Number,
     },
   },
   {
