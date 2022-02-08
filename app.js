@@ -18,7 +18,9 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
+
 app.use('/api/auth', authRouter);
+// app.use('/api/auth', googleRouter);
 // app.use('/api/transactions');
 // app.use('/api/statistics');
 
@@ -36,7 +38,7 @@ app.use((err, req, res, next) => {
   res.status(err.status).json({ message: err.message });
 
   if (!err.status) {
-    res.status(500).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
   }
 });
 
