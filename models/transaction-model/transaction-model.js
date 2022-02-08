@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const { Schema, model } = mongoose;
+const { Schema, SchemaTypes, model } = mongoose;
 
 const transactionSchema = new Schema(
   {
@@ -30,6 +30,11 @@ const transactionSchema = new Schema(
     categoryName: {
       type: String,
       required: [true, 'Category Name is required'],
+    },
+    owner: {
+      type: SchemaTypes.ObjectId,
+      ref: 'user',
+      required: true,
     },
   },
   {
