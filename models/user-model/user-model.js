@@ -6,13 +6,9 @@ const { Schema, model } = mongoose;
 
 const userSchema = new Schema(
   {
-    firstName: {
+    name: {
       type: String,
-      default: 'John',
-    },
-    lastName: {
-      type: String,
-      default: 'McClane',
+      default: 'userName',
     },
     email: {
       type: String,
