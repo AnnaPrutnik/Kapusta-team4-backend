@@ -9,7 +9,16 @@ export class UserService {
     try {
       return await this.repository.findUserByEmail(email);
     } catch (error) {
-      console.error(`Error on searching user: ${error.message}`);
+      console.error(`Error on searching user by email: ${error.message}`);
+      return null;
+    }
+  }
+
+  async findUserById(id) {
+    try {
+      return await this.repository.getById(id);
+    } catch (error) {
+      console.error(`Error on searching user by id: ${error.message}`);
       return null;
     }
   }
