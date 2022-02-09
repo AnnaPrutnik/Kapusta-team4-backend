@@ -1,3 +1,4 @@
+
 import { AbstractRepository } from '../abstract-repository/abstract-repository';
 
 export class TransactionRepository extends AbstractRepository {

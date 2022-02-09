@@ -1,4 +1,6 @@
+
 import {transactionRepository} from '../../repositories';
+
 
 class TransactionController {
   async getTransactionById(req, res, next) {
@@ -9,9 +11,7 @@ class TransactionController {
         .status(200)
         .json({ status: 'success', code: 200, data: { transaction } });
     }
-    res
-      .status(404)
-      .json({ status: 'error', code: 404, message: 'Not found' });
+    res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
   }
 
   async addTransaction(req, res, next) {
@@ -20,7 +20,7 @@ class TransactionController {
       status: 'success',
       code: 201,
       data: { newTransaction },
-    })
+    });
   }
 
   async removeTransaction(req, res, next) {
@@ -31,9 +31,7 @@ class TransactionController {
         .status(200)
         .json({ status: 'success', code: 200, data: { transaction } });
     }
-    res
-      .status(404)
-      .json({ status: 'error', code: 404, message: 'Not found' });
+    res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
   }
 }
 
