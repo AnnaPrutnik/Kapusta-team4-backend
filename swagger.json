@@ -46,9 +46,10 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateUser"
+                
               },
               "example": {
+                "name": "userName",
                 "email": "1@mail.com",
                 "password": "12345678"
               }
@@ -65,23 +66,19 @@
                     "status": "success",
                     "code": 201,
                     "data": {
-                      "user": {
-                        "id": "1",
-                        "email": "1@mail.com"
-                      }
+                      "id": "1",
+                      "name": "userName",
+                      "email": "1@mail.com"
                     }
                   }
                 }
               }
             }
           },
-          "400": {
-            "description": "Bad request (invalid request body)"
-          },
           "409": {
             "status": "error",
             "code": 409,
-            "description": "Email is already exist"
+            "description": "Email in Use"
           }
         }
       }
@@ -90,6 +87,7 @@
       "post": {
         "tags": ["Auth"],
         "summary": "User login",
+        "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -115,9 +113,8 @@
                     "code": 200,
                     "data": {
                       "token": "eyJhbGcJIUzI1N5cCI9.eyJfaWQiOiI2MWU3MjFjDgxZiOjE.yCUUpXPEYUuX4Ggj51W0",
-                      "user": {
-                        "email": "1@mail.com"
-                      }
+                      "email": "1@mail.com",
+                      "name": "userName"
                     }
                   }
                 }
@@ -125,10 +122,7 @@
             }
           },
           "401": {
-            "description": "Invalid credentials"
-          },
-          "500": {
-            "description": "Server error"
+            "description": "Bad Credentials"
           }
         }
       }
@@ -140,14 +134,7 @@
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegistrationResponse"
-              }
-            }
-          }
+          "required": true
         },
         "responses": {
           "204": {
@@ -157,12 +144,15 @@
                 "schema": {
                   "example": {
                     "status": "success",
-                    "code": 200,
-                    "data": { }
+                    "code": 204
                   }
                 }
               }
             }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
           }
         }
       }
@@ -181,6 +171,20 @@
           }
         },
         "responses": {
+          "200": {
+            "description": "Balance received",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": {
+                    "balance": 1000
+                  }
+                }
+              }
+            }
+          },
           "400": {
             "description": "Bad request (invalid request body)"
           }
@@ -198,7 +202,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ReportsBalanceResponse"
               }
             }
           }
@@ -221,7 +224,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ReportsBalanceResponse"
               }
             }
           }
@@ -236,43 +238,14 @@
     "api/transactions/:transactionId": {
       "delete": {
         "tags": ["Transactions"],
-        "summary": "Delete transaction id",
+        "summary": "Delete transaction",
         "parameters": [],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ReportsBalanceResponse"
-              }
-            }
-          }
-        },
-        "200": {
-          "description": "Transaction is deleted",
-          "content": {
-            "application/json": {
-              "example": {
-                "status": "success",
-                "code": 200,
-                "message": "transaction deleted",
-                "result": {
-                  "date": {
-                    "day": "day",
-                    "month": "month",
-                    "year": "year"
-                  },
-                  "_id": "id",
-                  "type": "type",
-                  "amount": 77777,
-                  "category": "food",
-                  "balance": 777,
-                  "owner": "",
-                  "createdAt": "createdAt",
-                  "updatedAt": "updatedAt"
-                }
-              }
+
             }
           }
         },
@@ -294,7 +267,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ReportsBalanceResponse"
               }
             }
           }
@@ -317,7 +289,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ReportsBalanceResponse"
               }
             }
           }
@@ -340,7 +311,6 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ReportsBalanceResponse"
               }
             }
           }
