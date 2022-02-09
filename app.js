@@ -5,7 +5,8 @@ import swaggerUi from 'swagger-ui-express';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import swaggerDocument from './swagger.json';
-import { authRouter } from './routes/api';
+import { authRouter, categoryRouter } from './routes/api';
+
 import googleRouter from './routes/api/google-router/google-router';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -18,8 +19,8 @@ app.use(logger(formatsLogger));
 app.use(cors());
 app.use(express.json());
 
-
 app.use('/api/auth', authRouter);
+app.use('/api/category', categoryRouter);
 // app.use('/api/auth', googleRouter);
 // app.use('/api/transactions');
 // app.use('/api/statistics');
