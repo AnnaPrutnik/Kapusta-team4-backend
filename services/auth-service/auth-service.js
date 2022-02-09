@@ -10,8 +10,10 @@ export class AuthService {
 
   async signUpUser(credentials) {
     try {
-      const { name, email } = await this.repository.createNewUser(credentials);
-      return { name, email };
+      const { id, name, email } = await this.repository.createNewUser(
+        credentials,
+      );
+      return { id, name, email };
     } catch (error) {
       console.error(`Error on creating new User: ${error.message}`);
       return null;
