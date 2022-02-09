@@ -24,8 +24,9 @@ const transactionSchema = new Schema(
       required: [true, 'Transaction Amount is required'],
     },
     categoryId: {
-      type: Number,
-      required: [true, 'Category Id is required'],
+      type: SchemaTypes.ObjectId,
+      ref: 'category',
+      required: true,
     },
     categoryName: {
       type: String,

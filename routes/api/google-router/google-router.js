@@ -1,10 +1,11 @@
 import { Router } from 'express';
 import errorWrapper from '../../../helpers/errorWrapper';
-import { googleAuth, googleRedirect } from "../../../controllers/google-controller/google-controller";
+import { googleAuthController } from '../../../controllers/';
 
-const authRouter = new Router();
+export const googleAuthRouter = new Router();
 
-authRouter.get('/google', errorWrapper(googleAuth));
-authRouter.get('/google-redirect', errorWrapper(googleRedirect));
-
-export default authRouter;
+googleAuthRouter.get('/google', errorWrapper(googleAuthController.googleAuth));
+googleAuthRouter.get(
+  '/google-redirect',
+  errorWrapper(googleAuthController.googleRedirect),
+);
