@@ -20,7 +20,7 @@ class AuthController {
     return res.status(201).json({
       status: 'success',
       code: 201,
-      data: userData,
+      data: { name: userData.name, email: userData.email },
     });
   }
 
