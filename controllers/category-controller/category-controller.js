@@ -11,9 +11,10 @@ class CategoryController {
 
   async getCategories(req, res, next) {
     const type = req.params;
-    console.log('controller', type);
     const categories = await categoryService.getCategoriesOneType(type);
-    console.log(categories);
+    if (!categories) {
+      return next(createError());
+    }
     return res.json({ message: 'category get controller', categories });
   }
 }

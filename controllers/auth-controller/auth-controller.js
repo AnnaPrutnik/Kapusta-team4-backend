@@ -27,7 +27,6 @@ class AuthController {
   async logInUser(req, res, next) {
     const { email, password } = req.body;
     const user = await userService.isUserValid(email, password);
-
     if (!user) {
       return next(createError(401, 'Bad Credentials'));
     }
@@ -41,6 +40,7 @@ class AuthController {
       data: {
         token,
         email: user.email,
+        name: user.name,
       },
     });
   }

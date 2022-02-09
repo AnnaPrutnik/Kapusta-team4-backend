@@ -23,6 +23,7 @@ const userSchema = new Schema(
     password: {
       type: String,
     },
+
     verifyToken: {
       type: String,
       default: randomUUID,

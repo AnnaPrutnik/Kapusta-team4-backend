@@ -14,19 +14,24 @@ export class CategoryService {
   //   }
 
   async getCategoriesOneType({ type }) {
-    let categories = [];
-    switch (type) {
-      case 'incomes':
-        categories = await this.repository.getIncomeCategories();
-        break;
+    try {
+      let categories = [];
+      switch (type) {
+        case 'incomes':
+          categories = await this.repository.getIncomeCategories();
+          break;
 
-      case 'outcomes':
-        categories = await this.repository.getExpenseCategories();
-        break;
+        case 'outcomes':
+          categories = await this.repository.getExpenseCategories();
+          break;
 
-      default:
-        break;
+        default:
+          break;
+      }
+      return categories;
+    } catch (error) {
+      console.error(`Error on getting categories: ${error.message}`);
+      return null;
     }
-    return categories;
   }
 }
