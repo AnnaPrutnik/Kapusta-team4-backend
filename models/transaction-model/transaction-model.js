@@ -4,46 +4,42 @@ const { Schema, SchemaTypes, model } = mongoose;
 
 const transactionSchema = new Schema(
   {
-    balance: {
-      type: Number,
-      default: 0
-    },
-    categoryId: {
+    transactionDate: {
       type: String,
-      required: true
+      required: [true, 'Transaction Date is required'],
+    },
+    isExpense: {
+      type: Boolean,
+      required: [
+        true,
+        "It's necessary to specify, whether its income or expense",
+      ],
     },
     description: {
       type: String,
-      required: true
+      default: null,
+    },
+    transactionAmount: {
+      type: Number,
+      required: [true, 'Transaction Amount is required'],
+    },
+    categoryId: {
+      type: Number,
+      required: [true, 'Category Id is required'],
+    },
+    categoryName: {
+      type: String,
+      required: [true, 'Category Name is required'],
     },
     owner: {
       type: SchemaTypes.ObjectId,
       ref: 'user',
       required: true,
     },
-    transactionType: {
-      type: String,
-      required: true,
-      enum: ["incomes", "expense"],
-    },
-    transactionDate: {
-      day: {
-        type: String,
-        required: true
-      },
-      month: {
-        type: String,
-        required: true
-      },
-      year: {
-        type: String,
-        required: true
-      }
-    }
   },
   {
     versionKey: false,
-    timestamps: true,
+    timeStamps: true,
   },
 );
 
