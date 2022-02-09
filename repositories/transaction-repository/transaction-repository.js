@@ -1,18 +1,22 @@
-import Transaction from '../../models/transaction-model/transaction-model';
+import { AbstractRepository } from '../abstract-repository/abstract-repository';
 
-const getTransactionById = async (id) => {
-  const result = await Transaction.findById(id)
-  return result;
+export class TransactionRepository extends AbstractRepository {
+  constructor(model) {
+    super(model);
+  }
+
+  async getTransactionById(id) {
+    const result = await this.model.findById(id)
+    return result;
+  }
+  
+  async addTransaction(body) {
+    const result = await this.model.create(body)
+    return result;
+  }
+  
+  async removeTransaction(transactionId) {
+    const result = await this.model.findOneAndRemove({_id: transactionId})
+    return result
+  }
 }
-
-const addTransaction = async (body) => {
-  const result = await Transaction.create(body)
-  return result;
-}
-
-const removeTransaction = async (transactionId) => {
-  const result = await Transaction.findOneAndRemove({_id: transactionId})
-  return result
-}
-
-export default {getTransactionById, addTransaction, removeTransaction};

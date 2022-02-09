@@ -1,9 +1,9 @@
-import {getTransactionById, addTransaction, removeTransaction} from '../../repositories/transaction-repository/transaction-repository';
+import {transactionRepository} from '../../repositories';
 
 class TransactionController {
   async getTransactionById(req, res, next) {
     const { id } = req.params;
-    const transaction = await getTransactionById(id);
+    const transaction = await transactionRepository.getTransactionById(id);
     if (transaction) {
       return res
         .status(200)
@@ -15,7 +15,7 @@ class TransactionController {
   }
 
   async addTransaction(req, res, next) {
-    const newTransaction = await addTransaction(req.body);
+    const newTransaction = await transactionRepository.addTransaction(req.body);
     res.status(201).json({
       status: 'success',
       code: 201,
@@ -25,7 +25,7 @@ class TransactionController {
 
   async removeTransaction(req, res, next) {
     const { transactionId } = req.params;
-    const transaction = await removeTransaction(transactionId);
+    const transaction = await transactionRepository.removeTransaction(transactionId);
     if (transaction) {
       return res
         .status(200)
