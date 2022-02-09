@@ -24,7 +24,7 @@ app.use('/api/category', categoryRouter);
 // app.use('/api/transactions');
 // app.use('/api/statistics');
 
-app.use('/auth', googleAuthRouter);
+app.use('api/auth', googleAuthRouter);
 app.use('/link', (req, res) => {
   res.sendFile(path.join(__dirname, './public/link.html'));
 });
