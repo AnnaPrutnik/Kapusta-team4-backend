@@ -20,4 +20,9 @@ export class CategoryRepository extends AbstractRepository {
     const categories = await this.model.find({ isExpense: true });
     return categories;
   }
+
+  async getCategory(id) {
+    const category = await this.model.findById(id);
+    return category;
+  }
 }

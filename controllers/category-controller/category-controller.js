@@ -13,9 +13,13 @@ class CategoryController {
     const type = req.params;
     const categories = await categoryService.getCategoriesOneType(type);
     if (!categories) {
-      return next(createError());
+      return next(createError(401, 'Choose right categories'));
     }
-    return res.json({ message: 'category get controller', categories });
+    return res.status(200).json({
+      status: 'success',
+      code: 200,
+      data: categories,
+    });
   }
 }
 
