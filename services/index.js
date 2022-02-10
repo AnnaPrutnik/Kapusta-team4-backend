@@ -13,7 +13,11 @@ const userService = new UserService(userRepository);
 const authService = new AuthService(userRepository);
 const googleAuthService = new GoogleAuthService(userRepository);
 const categoryService = new CategoryService(categoryRepository);
-const transactionService = new TransactionService(transactionRepository);
+const transactionService = new TransactionService(
+  transactionRepository,
+  userRepository,
+  categoryRepository,
+);
 
 export {
   userService,

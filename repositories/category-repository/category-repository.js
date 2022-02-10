@@ -12,7 +12,6 @@ export class CategoryRepository extends AbstractRepository {
 
   async getIncomeCategories() {
     const categories = await this.model.find({ isExpense: false });
-    console.log('repository', categories);
     return categories;
   }
 
@@ -24,5 +23,10 @@ export class CategoryRepository extends AbstractRepository {
   async getCategory(id) {
     const category = await this.model.findById(id);
     return category;
+  }
+
+  async findCategoryType(id) {
+    const { isExpense } = await this.model.findById(id);
+    return isExpense;
   }
 }

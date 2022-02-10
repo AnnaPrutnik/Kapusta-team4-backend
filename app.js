@@ -11,6 +11,7 @@ import {
   googleAuthRouter,
   userRouter,
   transactionRouter,
+  statisticRouter,
 } from './routes/api';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -25,11 +26,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/auth', authRouter);
-app.use('api/auth', googleAuthRouter);
+app.use('/api/auth', googleAuthRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/user', userRouter);
 app.use('/api/transactions', transactionRouter);
-// app.use('/api/statistics');
+app.use('/api/statistics', statisticRouter);
 
 app.use('/link', (req, res) => {
   res.sendFile(path.join(__dirname, './public/link.html'));
