@@ -33,7 +33,7 @@ class AuthController {
 
     const token = authService.getToken(user);
     await authService.setToken(user.id, token);
-
+    console.log(user);
     res.status(200).json({
       status: 'success',
       code: 200,
@@ -41,6 +41,8 @@ class AuthController {
         token,
         email: user.email,
         name: user.name,
+        balance: user.balance,
+        isFirstLogin: user.isFirstLogin,
       },
     });
   }

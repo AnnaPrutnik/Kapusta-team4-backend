@@ -4,9 +4,9 @@ import { transactionService } from '../../services';
 class TransactionController {
   async addTransaction(req, res, next) {
     const { id } = res.locals.user;
-    const { date, description, category, amount, isExpense } = req.body;
+    const { date, description, category, amount } = req.body;
 
-    if (!date || !description || !category || !amount || !isExpense) {
+    if (!date || !description || !category || !amount) {
       return next(createError(400, 'Add all required fields'));
     }
 
@@ -15,8 +15,7 @@ class TransactionController {
     }
 
     const transaction = {
-      transactionDate: date,
-      isExpense,
+      transactionDate: new Date(date),
       description,
       transactionAmount: Number(amount),
       categoryId: category,
@@ -28,7 +27,7 @@ class TransactionController {
     res.status(201).json({
       status: 'success',
       code: 201,
-      message: newTransaction,
+      data: newTransaction,
     });
   }
 
@@ -42,7 +41,7 @@ class TransactionController {
 
     return res
       .status(200)
-      .json({ status: 'success', code: 200, data: { transaction } });
+      .json({ status: 'success', code: 200, data: transaction });
   }
 
   // async getTransactionById(req, res, next) {
