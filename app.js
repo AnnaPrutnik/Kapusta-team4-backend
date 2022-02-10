@@ -5,7 +5,13 @@ import swaggerUi from 'swagger-ui-express';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import swaggerDocument from './swagger.json';
-import { authRouter, categoryRouter, googleAuthRouter } from './routes/api';
+import {
+  authRouter,
+  categoryRouter,
+  googleAuthRouter,
+  userRouter,
+  transactionRouter,
+} from './routes/api';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -19,12 +25,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/api/auth', authRouter);
+app.use('api/auth', googleAuthRouter);
 app.use('/api/category', categoryRouter);
-// app.use('/api/auth', googleRouter);
-// app.use('/api/transactions');
+app.use('/api/user', userRouter);
+app.use('/api/transactions', transactionRouter);
 // app.use('/api/statistics');
 
-app.use('api/auth', googleAuthRouter);
 app.use('/link', (req, res) => {
   res.sendFile(path.join(__dirname, './public/link.html'));
 });

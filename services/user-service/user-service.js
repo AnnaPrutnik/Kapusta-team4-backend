@@ -37,4 +37,16 @@ export class UserService {
       return null;
     }
   }
+
+  async getBalance(id) {
+    const balance = await this.repository.getBalance(id);
+    return balance;
+  }
+
+  async setBalance(id, value) {
+    console.log(value);
+    const newBalance = await this.repository.setBalance(id, value);
+    await this.repository.setIsFirstLogin(id);
+    return newBalance;
+  }
 }

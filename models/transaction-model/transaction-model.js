@@ -28,10 +28,6 @@ const transactionSchema = new Schema(
       ref: 'category',
       required: true,
     },
-    categoryName: {
-      type: String,
-      required: [true, 'Category Name is required'],
-    },
     owner: {
       type: SchemaTypes.ObjectId,
       ref: 'user',

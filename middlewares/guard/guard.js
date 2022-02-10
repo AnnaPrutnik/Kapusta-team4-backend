@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import createError from 'http-errors';
 import { authService, userService } from '../../services';
 
 export const guard = async (req, res, next) => {

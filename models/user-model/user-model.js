@@ -42,6 +42,7 @@ const userSchema = new Schema(
     },
     balance: {
       type: Number,
+      default: null,
     },
   },
   {

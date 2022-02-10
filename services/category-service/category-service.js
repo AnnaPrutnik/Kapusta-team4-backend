@@ -21,7 +21,7 @@ export class CategoryService {
           categories = await this.repository.getIncomeCategories();
           break;
 
-        case 'outcomes':
+        case 'expenses':
           categories = await this.repository.getExpenseCategories();
           break;
 
