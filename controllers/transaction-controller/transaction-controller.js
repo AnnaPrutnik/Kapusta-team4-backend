@@ -5,9 +5,9 @@ import { transactionService } from '../../services';
 class TransactionController {
   async addTransaction(req, res, next) {
     const { id } = res.locals.user;
-    const { date, description, category, amount } = req.body;
+    const { date, description, categoryId, amount } = req.body;
 
-    if (!date || !description || !category || !amount) {
+    if (!date || !description || !categoryId || !amount) {
       return next(createError(400, 'Add all required fields'));
     }
 
@@ -19,7 +19,7 @@ class TransactionController {
       transactionDate: date,
       description,
       transactionAmount: Number(amount),
-      categoryId: category,
+      categoryId,
       owner: id,
     };
 
