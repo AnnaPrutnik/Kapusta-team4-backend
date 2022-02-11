@@ -5,7 +5,7 @@ const { Schema, SchemaTypes, model } = mongoose;
 const transactionSchema = new Schema(
   {
     transactionDate: {
-      type: String,
+      type: Date,
       required: [true, 'Transaction Date is required'],
     },
     isExpense: {
@@ -34,10 +34,7 @@ const transactionSchema = new Schema(
       required: true,
     },
   },
-  {
-    versionKey: false,
-    timeStamps: true,
-  },
+  { versionKey: false, timestamps: true },
 );
 
 export const Transaction = model('transaction', transactionSchema);

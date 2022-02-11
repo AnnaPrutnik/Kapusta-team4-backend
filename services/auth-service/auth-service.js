@@ -41,6 +41,7 @@ export class AuthService {
       if (decodedToken) {
         return true;
       }
+      return false;
     } catch (error) {
       console.error(`Error on checking token: ${error.message}`);
       return null;
