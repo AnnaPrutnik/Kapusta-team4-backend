@@ -1,0 +1,529 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "version": "1.0.0",
+    "title": "Kapusta API",
+    "description": "Kapusta API documentation",
+    "license": {
+      "name": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  },
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "servers": [
+    { 
+      "url": "http://localhost:3000" 
+    },
+    {
+      "url": "https://ссылка_на.herokuapp.com/"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Auth",
+      "description": "Authorization endpoints"
+    },
+    {
+      "name": "User",
+      "description": "User endpoints"
+    },
+    {
+      "name": "Transactions",
+      "description": "Transactions endpoints"
+    },
+    {
+      "name": "Statistics",
+      "description": "Statistics endpoints"
+    }
+  ],
+  "paths": {
+    "api/auth/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Registration's endpoint",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                
+              },
+              "example": {
+                "name": "userName",
+                "email": "1@mail.com",
+                "password": "12345678"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "code": 201,
+                    "data": {
+                      "id": "1",
+                      "name": "userName",
+                      "email": "1@mail.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "status": "error",
+            "code": 409,
+            "description": "Email in Use"
+          }
+        }
+      }
+    },
+    "api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Authentication endpoint",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegistrationResponse"
+              },
+              "example": {
+                "email": "1@mail.com",
+                "password": "12345678"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "code": 200,
+                    "data": {
+                      "token": "eyJhbGcJIUzI1N5cCI9.eyJfaWQiOiI2MWU3MjFjDgxZiOjE.yCUUpXPEYUuX4Ggj51W0",
+                      "email": "1@mail.com",
+                      "name": "userName"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Bad Credentials"
+          }
+        }
+      }
+    },
+    "api/auth/logout": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Logout endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "code": 204
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Not authorized",
+            "content": {}
+          }
+        }
+      }
+    },
+    "api/auth/google": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Google authorization endpoint",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "token": "Bearer {token}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/user/balance": {
+      "get": {
+        "tags": ["User"],
+        "summary": "User balance endpoint",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Get user balance",
+          "required": true,
+          "content": {
+            "application/json": {
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Balance received",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": {
+                    "balance": 1000
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["User"],
+        "summary": "Change balance endpoint",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Patch user balance. Changing the user`s field isFirstLogin. The body must contain the value of the field with the amount of sums",
+          "required": true,
+          "content": {
+            "application/json": {
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Balance received",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": {
+                    "balance": "Number"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Balance should be a number"
+          }
+        }
+      }
+    },
+    "api/transactions/": {
+      "post": {
+        "tags": ["Transactions"],
+        "summary": "Add transactions endpoint",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Required field 'isExpense'",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 201,
+                  "message": {
+                    "date": "String",
+                    "isExpense": "Boolean",
+                    "description": "String",
+                    "transactionAmount": "Number",
+                    "category": "id"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Amount should be a number"
+          }
+        }
+      }
+    },
+    "api/transactions/income": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get all income categories endpoint",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Get transactions incomes",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "example": "month - amount"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "api/transactions/expense": {
+      "get": {
+        "tags": ["Transactions"],
+        "summary": "Get all expenses categories endpoint",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Get transactions expenses",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "example": "month - amount"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "api/transactions/:transactionId": {
+      "delete": {
+        "tags": ["Transactions"],
+        "summary": "Delete transaction endpoint",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Delete transaction by id",
+          "required": true
+
+        },
+        "responses": {
+          "200": {
+            "description": "Balance received",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": "{transaction}"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/statistics/expenses": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get expenses for 6 months endpoint",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Receive a summary of the costs for the last 6 months (on the page expenses/income) in the form EXPENSE: month - amount, month - amount",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "api/statistics/income": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get summary of the months of the current year by income",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "api/statistics/expenses/:month": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get detailed expenses information for the month ",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "api/statistics/incomes/:month": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get detailed incomes information for the month ",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    },
+    "api/statistics/:month/:categoryId": {
+      "get": {
+        "tags": ["Statistics"],
+        "summary": "Get for obtaining information on a specific category for a specific month ",
+        "parameters": [],
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad request (invalid request body)"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationRequest": {
+        "type": "object",
+        "required": ["email", "password"],
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "User's email",
+            "format": "email"
+          },
+          "password": {
+            "type": "string",
+            "description": "User's password",
+            "example": "qwerty123"
+          }
+        }
+      },
+      "RegistrationResponse": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "User's email",
+              "format": "email"
+            },
+            "userId": {
+              "type": "integer",
+              "description": "User's id",
+              "example": "32143232436545474"
+            }
+          }
+        },
+        "example": [
+          { "email": "1@mail.com", "userId": "1" },
+          { "email": "2@mail.com", "userId": "2" }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
