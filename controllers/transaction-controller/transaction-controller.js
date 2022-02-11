@@ -1,4 +1,5 @@
 import createError from 'http-errors';
+import moment from 'moment';
 import { transactionService } from '../../services';
 
 class TransactionController {
@@ -15,7 +16,7 @@ class TransactionController {
     }
 
     const transaction = {
-      transactionDate: new Date(date),
+      transactionDate: date,
       description,
       transactionAmount: Number(amount),
       categoryId: category,
@@ -44,16 +45,14 @@ class TransactionController {
       .json({ status: 'success', code: 200, data: transaction });
   }
 
-  // async getTransactionById(req, res, next) {
-  //   const { id } = req.params;
-  //   const transaction = await transactionRepository.getTransactionById(id);
-  //   if (transaction) {
-  //     return res
-  //       .status(200)
-  //       .json({ status: 'success', code: 200, data: { transaction } });
-  //   }
-  //   res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
-  // }
+  async getTransactionByDay(req, res, next) {
+    const { id } = res.locals.user;
+    const { date } = req.body;
+    const transactions = await transactionService.getTransactionByDay(id, date);
+    return res
+      .status(200)
+      .json({ status: 'success', code: 200, data: transactions });
+  }
 }
 
 export default TransactionController;

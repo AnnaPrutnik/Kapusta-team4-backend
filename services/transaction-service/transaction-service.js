@@ -26,7 +26,6 @@ export class TransactionService {
     });
 
     const balance = await this.secondRepository.getBalance(transaction.owner);
-    console.log(transaction.owner);
     let newBalance = null;
     if (isExpense) {
       newBalance = await this.secondRepository.setBalance(
@@ -40,8 +39,7 @@ export class TransactionService {
       );
     }
 
-    console.log('newBalance', newBalance);
-    return { newTransaction, balance };
+    return { newTransaction, newBalance };
   }
 
   async removeTransaction(userId, transactionId) {
@@ -75,5 +73,32 @@ export class TransactionService {
   async getIncomesForSixMonth(userId) {
     const data = await this.repository.getTransactionForSixMonth(userId, false);
     return data;
+  }
+
+  async getTransactionByDay(userId, date) {
+    const transactions = await this.repository.getTransactionForOneDay(
+      userId,
+      date,
+    );
+    return transactions;
+  }
+
+  async getStatsByMonth(userId, month, isExpense) {
+    const categories = await this.repository.getCategoryByMonth(
+      userId,
+      month,
+      isExpense,
+    );
+    const total = await this.repository.getTotalAmountByMonth(userId, month);
+    return { total, categories };
+  }
+
+  async getStatsByCategory(userId, month, categoryId) {
+    const categories = await this.repository.getStatsByCategory(
+      userId,
+      month,
+      categoryId,
+    );
+    return categories;
   }
 }

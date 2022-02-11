@@ -14,7 +14,23 @@ statisticRouter.get(
   guard,
   statisticController.getIncomeLastSixMonth,
 );
-statisticRouter.get('/balance', guard);
+statisticRouter.get(
+  '/expenses/:month',
+  guard,
+  statisticController.getExpensesByMonth,
+);
+
+statisticRouter.get(
+  '/incomes/:month',
+  guard,
+  statisticController.getIncomesByMonth,
+);
+
+statisticRouter.get(
+  '/categories/:month',
+  guard,
+  statisticController.getStatsByCategory,
+);
 
 // - `api/statistics`
 //   - `/expenses` - GET - энд-поинт получения общей сводки по расходам за
