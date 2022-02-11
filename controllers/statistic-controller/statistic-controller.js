@@ -47,11 +47,11 @@ class StatisticController {
   async getStatsByCategory(req, res, next) {
     const { id } = res.locals.user;
     const { month } = req.params;
-    const { category } = req.body;
+    const { categoryId } = req.body;
     const data = await transactionService.getStatsByCategory(
       id,
       month,
-      category,
+      categoryId,
     );
     return res.status(200).json({
       status: 'success',

@@ -30,9 +30,9 @@ Repository for backend for team project: team 4
     isExpense должно приходить от фронта body с полями: date: string,
     description: string, category: id as string, amount: string, isExpense:
     boolean +
-  - `/` - GET - энд-поинт получения списка доходов на текущую дату/или за
+  - `/` - GET - энд-поинт получения списка транзакций на текущую дату/или за
     текущий месяц, если не будет реализовывать календарь (на дату, которая
-    указана в календаре) +
+    указана в календаре) - нужно body c date +
   - `/:transactionId` - DELETE - энд-поинт удаления транзакции по id +
 
 - `api/statistics`

@@ -16,7 +16,7 @@
       "url": "http://localhost:3000" 
     },
     {
-      "url": "https://ссылка_на.herokuapp.com/"
+      "url": "https://goit-fs35-team4-kapusta.herokuapp.com/api"
     }
   ],
   "tags": [
@@ -27,6 +27,10 @@
     {
       "name": "User",
       "description": "User endpoints"
+    },
+    {
+      "name": "Category",
+      "description": "Category endpoints"
     },
     {
       "name": "Transactions",
@@ -48,7 +52,6 @@
           "content": {
             "application/json": {
               "schema": {
-                
               },
               "example": {
                 "name": "userName",
@@ -78,9 +81,15 @@
             }
           },
           "409": {
-            "status": "error",
-            "code": 409,
-            "description": "Email in Use"
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "error",
+                  "code": 409,
+                  "message": "Email in Use"
+                }
+              }
+            }
           }
         }
       }
@@ -124,7 +133,14 @@
             }
           },
           "401": {
-            "description": "Bad Credentials"
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Bad Credentials"
+                }
+              }
+            }
           }
         }
       }
@@ -160,8 +176,14 @@
             }
           },
           "401": {
-            "description": "Not authorized",
-            "content": {}
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
+                }
+              }
+            }
           }
         }
       }
@@ -248,7 +270,92 @@
             }
           },
           "400": {
-            "description": "Balance should be a number"
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 400,
+                  "message": "Balance should be a number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/category/incomes": {
+      "get": {
+        "tags": ["Category"],
+        "summary": "Category incomes endpoint",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "get all categories for Income",
+          "required": true,
+          "content": {
+            "application/json": {
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Balance received",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": "categories"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Choose right categories"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/category/expenses": {
+      "get": {
+        "tags": ["Category"],
+        "summary": "Category expenses endpoint",
+        "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "description": "Get all categories for Expenses",
+          "required": true,
+          "content": {
+            "application/json": {
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Balance received",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": "categories"
+                }
+              }
+            }
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 400,
+                  "message": "Choose right categories"
+                }
+              }
+            }
           }
         }
       }
@@ -257,18 +364,16 @@
       "post": {
         "tags": ["Transactions"],
         "summary": "Add transactions endpoint",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Required field 'isExpense'",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-              }
+        "parameters": [
+          {
+            "name": "Transactions",
+            "required": true,
+            "schema": {
+              "type": "string"
             }
           }
-        },
+        ],
+        "security": [{ "Bearer": [] }],
         "responses": {
           "201": {
             "content": {
@@ -281,6 +386,7 @@
                     "isExpense": "Boolean",
                     "description": "String",
                     "transactionAmount": "Number",
+                    "amount": "String",
                     "category": "id"
                   }
                 }
@@ -288,18 +394,23 @@
             }
           },
           "400": {
-            "description": "Amount should be a number"
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 400,
+                  "message": "Amount should be a number"
+                }
+              }
+            }
           }
         }
-      }
-    },
-    "api/transactions/income": {
+      },
       "get": {
         "tags": ["Transactions"],
         "summary": "Get all income categories endpoint",
         "security": [{ "Bearer": [] }],
         "requestBody": {
-          "description": "Get transactions incomes",
+          "description": "Get list of income for the current date/or for the current month",
           "required": true,
           "content": {
             "application/json": {
@@ -310,31 +421,16 @@
           }
         },
         "responses": {
-          "400": {
-            "description": "Bad request (invalid request body)"
-          }
-        }
-      }
-    },
-    "api/transactions/expense": {
-      "get": {
-        "tags": ["Transactions"],
-        "summary": "Get all expenses categories endpoint",
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Get transactions expenses",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "example": "month - amount"
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": "{transaction}"
+                }
               }
             }
-          }
-        },
-        "responses": {
-          "400": {
-            "description": "Bad request (invalid request body)"
           }
         }
       }
@@ -344,20 +440,15 @@
         "tags": ["Transactions"],
         "summary": "Delete transaction endpoint",
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Delete transaction by id",
-          "required": true
-
-        },
         "responses": {
           "200": {
-            "description": "Balance received",
+            "description": "Delete transaction by id",
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
                   "code": 200,
-                  "data": "{transaction}"
+                  "data": "{transactions}"
                 }
               }
             }
@@ -382,8 +473,16 @@
           }
         },
         "responses": {
-          "400": {
-            "description": "Bad request (invalid request body)"
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": "data"
+                }
+              }
+            }
           }
         }
       }
@@ -404,8 +503,16 @@
           }
         },
         "responses": {
-          "400": {
-            "description": "Bad request (invalid request body)"
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": "data"
+                }
+              }
+            }
           }
         }
       }
@@ -426,8 +533,16 @@
           }
         },
         "responses": {
-          "400": {
-            "description": "Bad request (invalid request body)"
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": "data"
+                }
+              }
+            }
           }
         }
       }
@@ -448,8 +563,16 @@
           }
         },
         "responses": {
-          "400": {
-            "description": "Bad request (invalid request body)"
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": "data"
+                }
+              }
+            }
           }
         }
       }
@@ -470,54 +593,22 @@
           }
         },
         "responses": {
-          "400": {
-            "description": "Bad request (invalid request body)"
+          "200": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": "data"
+                }
+              }
+            }
           }
         }
       }
     }
   },
   "components": {
-    "schemas": {
-      "RegistrationRequest": {
-        "type": "object",
-        "required": ["email", "password"],
-        "properties": {
-          "email": {
-            "type": "string",
-            "description": "User's email",
-            "format": "email"
-          },
-          "password": {
-            "type": "string",
-            "description": "User's password",
-            "example": "qwerty123"
-          }
-        }
-      },
-      "RegistrationResponse": {
-        "type": "array",
-        "items": {
-          "type": "object",
-          "properties": {
-            "email": {
-              "type": "string",
-              "description": "User's email",
-              "format": "email"
-            },
-            "userId": {
-              "type": "integer",
-              "description": "User's id",
-              "example": "32143232436545474"
-            }
-          }
-        },
-        "example": [
-          { "email": "1@mail.com", "userId": "1" },
-          { "email": "2@mail.com", "userId": "2" }
-        ]
-      }
-    },
     "securitySchemes": {
       "Bearer": {
         "type": "http",
