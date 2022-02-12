@@ -14,7 +14,7 @@ export class GoogleAuthService {
       data: {
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: `${process.env.BASE_URL}/auth/google-redirect`,
+        redirect_uri: `${process.env.BASE_URL}/api/auth/google-redirect`,
         grant_type: 'authorization_code',
         code: authCode,
       },

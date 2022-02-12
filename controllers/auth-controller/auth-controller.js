@@ -33,7 +33,6 @@ class AuthController {
 
     const token = authService.getToken(user);
     await authService.setToken(user.id, token);
-    console.log(user);
     res.status(200).json({
       status: 'success',
       code: 200,
@@ -48,6 +47,7 @@ class AuthController {
   }
 
   async logOutUser(req, res, next) {
+    const user = res.locals.user;
     await authService.setToken(user.id, null);
 
     res.status(200).json({
@@ -57,13 +57,14 @@ class AuthController {
   }
 
   async refreshUser(req, res, next) {
-    const { email, name } = res.locals.user;
+    const { email, name, isFirstLogin } = res.locals.user;
     res.status(200).json({
       status: 'success',
       code: 204,
       data: {
         name,
         email,
+        isFirstLogin,
       },
     });
   }
