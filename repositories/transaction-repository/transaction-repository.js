@@ -58,7 +58,6 @@ export class TransactionRepository extends AbstractRepository {
   async getTransactionForOneDay(ownerId, date) {
     const dateFrom = new Date(moment(date).startOf('day'));
     const dateTo = new Date(moment(date).endOf('day'));
-    console.log(object);
     const transactions = await this.model.find({
       owner: ownerId,
       transactionDate: {
