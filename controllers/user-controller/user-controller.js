@@ -14,7 +14,9 @@ class UserController {
 
   async setBalance(req, res, next) {
     const { id } = res.locals.user;
+    console.log(req.body);
     const value = Number(req.body.value);
+    console.log(value);
     if (!value) {
       return next(createError(400, 'Balance should be a number'));
     }
