@@ -58,13 +58,18 @@ export class TransactionRepository extends AbstractRepository {
   async getTransactionForOneDay(ownerId, date) {
     const dateFrom = new Date(moment(date).startOf('day'));
     const dateTo = new Date(moment(date).endOf('day'));
-    const transactions = await this.model.find({
-      owner: ownerId,
-      transactionDate: {
-        $gte: dateFrom,
-        $lte: dateTo,
-      },
-    });
+    const transactions = await this.model
+      .find({
+        owner: ownerId,
+        transactionDate: {
+          $gte: dateFrom,
+          $lte: dateTo,
+        },
+      })
+      .populate({
+        path: 'categoryId',
+        select: 'category',
+      });
 
     return transactions;
   }
