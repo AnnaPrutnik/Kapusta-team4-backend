@@ -31,10 +31,12 @@ class UserController {
   }
 
   async uploadAvatar(req, res, next) {
+    const user = res.locals.user
     const uploadService = new UploadFileService(
       CloudFileStorage,
       req.file,
-      req.user
+      // req.user,
+      user
     )
     const avatarUrl = await uploadService.updateAvatar();
   

@@ -12,9 +12,9 @@ cloudinary.config({
 
 class CloudStorage {
   constructor(file, user) {
-    this.userId = user; //выдает ошибку (user.id)
+    this.userId = user.id;
     this.filePath = file.path;
-    this.idAvatarCloud = user; //выдает ошибку (user.idAvatarCloud;)
+    this.idAvatarCloud = user.idAvatarCloud;
     this.folderAvatar = 'Kapusta';
     this.uploadCloud = promisify(cloudinary.uploader.upload)
   }
