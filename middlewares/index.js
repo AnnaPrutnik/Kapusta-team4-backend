@@ -3,4 +3,5 @@ export {
   validateSignUp,
   validateLogIn,
   validateSetBalance,
+  validateAddTransaction,
 } from './validation/validation-functions';

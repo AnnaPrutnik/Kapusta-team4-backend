@@ -1,10 +1,15 @@
 import { Router } from 'express';
 import { transactionController } from '../../../controllers';
-import { guard } from '../../../middlewares/';
+import { guard, validateAddTransaction } from '../../../middlewares/';
 
 export const transactionRouter = new Router();
 
-transactionRouter.post('/', guard, transactionController.addTransaction);
+transactionRouter.post(
+  '/',
+  guard,
+  validateAddTransaction,
+  transactionController.addTransaction,
+);
 transactionRouter.get('/', guard, transactionController.getTransactionByDay);
 
 transactionRouter.delete(
