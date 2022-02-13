@@ -41,4 +41,8 @@ export class UserRepository extends AbstractRepository {
       { new: true },
     );
   }
+
+  async updateAvatar(id, avatar, idAvatarCloud = null) {
+    return await this.model.updateOne({_id: id}, {avatar, idAvatarCloud})
+  }
 }

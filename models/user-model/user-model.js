@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { randomUUID } from 'crypto';
 import bcrypt from 'bcrypt';
+import gravatar from 'gravatar.js';
 
 const { Schema, model } = mongoose;
 
@@ -42,6 +43,16 @@ const userSchema = new Schema(
     },
     balance: {
       type: Number,
+      default: null,
+    },
+    avatar: {
+      type: String,
+      default: function () {
+        return gravatar.url(this.email, {defaultIcon: '404', size: '250' }, true)
+      },
+    },
+    idAvatarCloud: {
+      type: String,
       default: null,
     },
   },

@@ -1,5 +1,9 @@
 import createError from 'http-errors';
 import { userService } from '../../services';
+import {  
+  UploadFileService,
+  CloudFileStorage
+} from '../../services/file-storage';
 
 class UserController {
   async getBalance(req, res, next) {
@@ -24,6 +28,19 @@ class UserController {
       code: 200,
       data: balance,
     });
+  }
+
+  async uploadAvatar(req, res, next) {
+    const uploadService = new UploadFileService(
+      CloudFileStorage,
+      req.file,
+      req.user
+    )
+    const avatarUrl = await uploadService.updateAvatar();
+  
+    res
+      .status(200)
+      .json({ status: 'success', code: 200, data: {avatarUrl} });
   }
 }
 
