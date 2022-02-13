@@ -5,8 +5,8 @@ export const validateSignUp = async (req, res, next) => {
   try {
     await signUpSchema.validateAsync(req.body);
   } catch (error) {
-    console.error(`Missing required fields`);
-    return next(createError(400, 'Missing required fields'));
+    console.error(`Missing required fields: ${error.message}`);
+    return next(createError(400, `Missing required fields: ${error.message}`));
   }
 
   next();
