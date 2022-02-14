@@ -5,11 +5,6 @@ export class CategoryRepository extends AbstractRepository {
     super(model);
   }
 
-  // async addCategory(category, isExpense) {
-  //   const newCategory = await this.model.create({ category, isExpense });
-  //   return newCategory;
-  // }
-
   async getIncomeCategories() {
     const categories = await this.model.find({ isExpense: false });
     return categories;

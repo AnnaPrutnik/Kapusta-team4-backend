@@ -1,5 +1,4 @@
 import createError from 'http-errors';
-import moment from 'moment';
 import { transactionService } from '../../services';
 
 class TransactionController {
@@ -12,7 +11,7 @@ class TransactionController {
     }
 
     if (!Number(amount)) {
-      return next(createError(400, 'Amount should be a number'));
+      return next(createError(415, 'Amount should be a number'));
     }
 
     const transaction = {

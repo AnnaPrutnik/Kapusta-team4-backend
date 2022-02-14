@@ -5,14 +5,6 @@ export class CategoryService {
     this.repository = repository;
   }
 
-  //   async addCategory(category, isExpense) {
-  //     const addedCategory = await this.repository.addCategory(
-  //       category,
-  //       isExpense,
-  //     );
-  //     return addedCategory;
-  //   }
-
   async getCategoriesOneType({ type }) {
     try {
       let categories = [];

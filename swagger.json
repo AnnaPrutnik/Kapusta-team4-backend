@@ -12,9 +12,6 @@
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "servers": [
-    { 
-      "url": "http://localhost:3000" 
-    },
     {
       "url": "https://goit-fs35-team4-kapusta.herokuapp.com/api"
     }
@@ -51,8 +48,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-              },
+              "schema": {},
               "example": {
                 "name": "userName",
                 "email": "1@mail.com",
@@ -81,6 +77,7 @@
             }
           },
           "409": {
+            "description": "User with this email already exist",
             "content": {
               "application/json": {
                 "example": {
@@ -125,7 +122,9 @@
                     "data": {
                       "token": "eyJhbGcJIUzI1N5cCI9.eyJfaWQiOiI2MWU3MjFjDgxZiOjE.yCUUpXPEYUuX4Ggj51W0",
                       "email": "1@mail.com",
-                      "name": "userName"
+                      "name": "userName",
+                      "balance": 3600,
+                      "isFirstLogin": false
                     }
                   }
                 }
@@ -133,6 +132,7 @@
             }
           },
           "401": {
+            "description": "Wrong password",
             "content": {
               "application/json": {
                 "example": {
@@ -176,6 +176,57 @@
             }
           },
           "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/auth/refresh": {
+      "get": {
+        "tags": ["Auth"],
+        "summary": "Refresh token",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "204": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "example": {
+                    "status": "success",
+                    "code": 200,
+                    "data": {
+                      "name": "userName",
+                      "email": "1@mail.com",
+                      "isFirstLogin": false,
+                      "balance": 3500
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
             "content": {
               "application/json": {
                 "example": {
@@ -193,9 +244,6 @@
         "tags": ["Auth"],
         "summary": "Google authorization endpoint",
         "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "required": true
-        },
         "responses": {
           "200": {
             "description": "Successful operation",
@@ -216,15 +264,18 @@
       "get": {
         "tags": ["User"],
         "summary": "User balance endpoint",
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Get user balance",
-          "required": true,
-          "content": {
-            "application/json": {
-            }
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
           }
-        },
+        ],
+        "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
             "description": "Balance received",
@@ -239,24 +290,50 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
+                }
+              }
+            }
           }
         }
       },
       "patch": {
         "tags": ["User"],
         "summary": "Change balance endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Patch user balance. Changing the user`s field isFirstLogin. The body must contain the value of the field with the amount of sums",
           "required": true,
           "content": {
             "application/json": {
+              "schema": {},
+              "example": {
+                "value": 500
+              }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Balance received",
+            "description": "Balance changed",
             "content": {
               "application/json": {
                 "example": {
@@ -278,6 +355,17 @@
                 }
               }
             }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
+                }
+              }
+            }
           }
         }
       }
@@ -286,18 +374,28 @@
       "get": {
         "tags": ["Category"],
         "summary": "Category incomes endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "get all categories for Income",
           "required": true,
           "content": {
-            "application/json": {
-            }
+            "application/json": {}
           }
         },
         "responses": {
           "200": {
-            "description": "Balance received",
+            "description": "Categories received",
             "content": {
               "application/json": {
                 "example": {
@@ -308,12 +406,23 @@
               }
             }
           },
+          "400": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 400,
+                  "message": "Choose right categories"
+                }
+              }
+            }
+          },
           "401": {
+            "description": "Invalid token",
             "content": {
               "application/json": {
                 "example": {
                   "code": 401,
-                  "message": "Choose right categories"
+                  "message": "Not authorized"
                 }
               }
             }
@@ -325,13 +434,23 @@
       "get": {
         "tags": ["Category"],
         "summary": "Category expenses endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "description": "Get all categories for Expenses",
           "required": true,
           "content": {
-            "application/json": {
-            }
+            "application/json": {}
           }
         },
         "responses": {
@@ -347,12 +466,24 @@
               }
             }
           },
-          "401": {
+          "400": {
+            "description": "Wrong category",
             "content": {
               "application/json": {
                 "example": {
                   "code": 400,
                   "message": "Choose right categories"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
                 }
               }
             }
@@ -366,68 +497,156 @@
         "summary": "Add transactions endpoint",
         "parameters": [
           {
-            "name": "Transactions",
+            "name": "Authorization",
+            "in": "header",
             "required": true,
             "schema": {
               "type": "string"
-            }
+            },
+            "description": "Token issued to the current user"
           }
         ],
         "security": [{ "Bearer": [] }],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {},
+              "example": {
+                "date": "2022-02-10T10:11:41.232Z",
+                "description": "ЗП",
+                "categoryId": "620393a6f8a2c005b9fee297",
+                "amount": "1200"
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
+            "description": "Transaction added",
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
                   "code": 201,
-                  "message": {
-                    "date": "String",
-                    "isExpense": "Boolean",
-                    "description": "String",
-                    "transactionAmount": "Number",
-                    "amount": "String",
-                    "category": "id"
+                  "data": {
+                    "newTransaction": {
+                      "transactionDate": "2022-02-10T10:11:41.232Z",
+                      "isExpense": false,
+                      "description": "ЗП",
+                      "transactionAmount": 1200,
+                      "categoryId": {
+                        "_id": "620393a6f8a2c005b9fee297",
+                        "category": "ЗП"
+                      },
+                      "owner": "6207bd2f71328e2d067a01c3",
+                      "_id": "620a549dcbec3cd3880223bd",
+                      "createdAt": "2022-02-14T13:09:49.920Z",
+                      "updatedAt": "2022-02-14T13:09:49.920Z"
+                    },
+                    "newBalance": 5100
                   }
                 }
               }
             }
           },
+
           "400": {
+            "description": "Missing required fields",
             "content": {
               "application/json": {
                 "example": {
                   "code": 400,
+                  "message": "Add all required fields"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "In field amount not a number",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 415,
                   "message": "Amount should be a number"
                 }
               }
             }
           }
         }
-      },
+      }
+    },
+    "api/transactions/:date": {
       "get": {
         "tags": ["Transactions"],
-        "summary": "Get all income categories endpoint",
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Get list of income for the current date/or for the current month",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "example": "month - amount"
-              }
-            }
+        "summary": "Get all transactions for required date endpoint",
+        "parameters": [
+          {
+            "name": "Date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Required Date"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
           }
-        },
+        ],
+        "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
+            "description": "Successful operation",
             "content": {
               "application/json": {
                 "example": {
                   "status": "success",
                   "code": 200,
-                  "data": "{transaction}"
+                  "data": [
+                    {
+                      "_id": "6209202c8c918b26dfae1d80",
+                      "transactionDate": "2022-02-13T00:00:00.000Z",
+                      "isExpense": true,
+                      "description": "Cabage",
+                      "transactionAmount": 500,
+                      "categoryId": {
+                        "_id": "62039219a22d1cb39210d4c7",
+                        "category": "Продукты"
+                      },
+                      "owner": "6207bd2f71328e2d067a01c3",
+                      "createdAt": "2022-02-13T15:13:48.186Z",
+                      "updatedAt": "2022-02-13T15:13:48.186Z"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
                 }
               }
             }
@@ -439,6 +658,26 @@
       "delete": {
         "tags": ["Transactions"],
         "summary": "Delete transaction endpoint",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Id required transaction"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
@@ -448,7 +687,31 @@
                 "example": {
                   "status": "success",
                   "code": 200,
-                  "data": "{transactions}"
+                  "data": {
+                    "transaction": {
+                      "_id": "620921168c918b26dfae1d86",
+                      "transactionDate": "2022-02-13T00:00:00.000Z",
+                      "isExpense": true,
+                      "description": "Cabage",
+                      "transactionAmount": 500,
+                      "categoryId": "62039219a22d1cb39210d4c7",
+                      "owner": "6207bd2f71328e2d067a01c3",
+                      "createdAt": "2022-02-13T15:17:42.847Z",
+                      "updatedAt": "2022-02-13T15:17:42.847Z"
+                    },
+                    "newBalance": 5600
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
                 }
               }
             }
@@ -460,18 +723,18 @@
       "get": {
         "tags": ["Statistics"],
         "summary": "Get expenses for 6 months endpoint",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "description": "Receive a summary of the costs for the last 6 months (on the page expenses/income) in the form EXPENSE: month - amount, month - amount",
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-              }
-            }
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
           }
-        },
+        ],
+        "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
             "content": {
@@ -479,7 +742,31 @@
                 "example": {
                   "status": "success",
                   "code": 200,
-                  "data": "data"
+                  "data": [
+                    {
+                      "totalAnount": 2100,
+                      "month": 2
+                    },
+                    {
+                      "totalAnount": 1300,
+                      "month": 1
+                    },
+                    {
+                      "totalAnount": 1500,
+                      "month": 12
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
                 }
               }
             }
@@ -491,17 +778,18 @@
       "get": {
         "tags": ["Statistics"],
         "summary": "Get summary of the months of the current year by income",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-              }
-            }
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
           }
-        },
+        ],
+        "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
             "content": {
@@ -509,7 +797,31 @@
                 "example": {
                   "status": "success",
                   "code": 200,
-                  "data": "data"
+                  "data": [
+                    {
+                      "totalAnount": 2100,
+                      "month": 2
+                    },
+                    {
+                      "totalAnount": 1300,
+                      "month": 1
+                    },
+                    {
+                      "totalAnount": 1500,
+                      "month": 12
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
                 }
               }
             }
@@ -521,17 +833,27 @@
       "get": {
         "tags": ["Statistics"],
         "summary": "Get detailed expenses information for the month ",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-              }
-            }
+        "parameters": [
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Month in format yyyy-mm"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
           }
-        },
+        ],
+        "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
             "content": {
@@ -539,7 +861,59 @@
                 "example": {
                   "status": "success",
                   "code": 200,
-                  "data": "data"
+                  "data": {
+                    "total": [
+                      {
+                        "total": 2100,
+                        "isExpense": true
+                      },
+                      {
+                        "total": 7200,
+                        "isExpense": false
+                      }
+                    ],
+                    "categories": [
+                      {
+                        "sum": 400,
+                        "categoryId": {
+                          "_id": "6203920fa22d1cb39210d4c5",
+                          "category": "Транспорт"
+                        }
+                      },
+                      {
+                        "sum": 750,
+                        "categoryId": {
+                          "_id": "62039219a22d1cb39210d4c7",
+                          "category": "Продукты"
+                        }
+                      },
+                      {
+                        "sum": 800,
+                        "categoryId": {
+                          "_id": "620392c1f8a2c005b9fee287",
+                          "category": "Развлечение"
+                        }
+                      },
+                      {
+                        "sum": 150,
+                        "categoryId": {
+                          "_id": "620392caf8a2c005b9fee289",
+                          "category": "Здоровье"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
                 }
               }
             }
@@ -551,14 +925,32 @@
       "get": {
         "tags": ["Statistics"],
         "summary": "Get detailed incomes information for the month ",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Month in format yyyy-mm"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
+          }
+        ],
         "security": [{ "Bearer": [] }],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-              }
+              "schema": {}
             }
           }
         },
@@ -569,7 +961,45 @@
                 "example": {
                   "status": "success",
                   "code": 200,
-                  "data": "data"
+                  "data": {
+                    "total": [
+                      {
+                        "total": 7200,
+                        "isExpense": false
+                      },
+                      {
+                        "total": 2100,
+                        "isExpense": true
+                      }
+                    ],
+                    "categories": [
+                      {
+                        "sum": 3200,
+                        "categoryId": {
+                          "_id": "620393a6f8a2c005b9fee297",
+                          "category": "ЗП"
+                        }
+                      },
+                      {
+                        "sum": 4000,
+                        "categoryId": {
+                          "_id": "620393aef8a2c005b9fee299",
+                          "category": "Доп. доход"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
                 }
               }
             }
@@ -577,21 +1007,40 @@
         }
       }
     },
-    "api/statistics/:month/:categoryId": {
+    "api/statistics/categories": {
       "get": {
         "tags": ["Statistics"],
         "summary": "Get for obtaining information on a specific category for a specific month ",
-        "parameters": [],
-        "security": [{ "Bearer": [] }],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-              }
-            }
+        "parameters": [
+          {
+            "name": "month",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Month in format yyyy-mm"
+          },
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Category Id"
+          },
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
           }
-        },
+        ],
+        "security": [{ "Bearer": [] }],
         "responses": {
           "200": {
             "content": {
@@ -599,7 +1048,27 @@
                 "example": {
                   "status": "success",
                   "code": 200,
-                  "data": "data"
+                  "data": [
+                    {
+                      "total": 2000,
+                      "description": "Profit"
+                    },
+                    {
+                      "total": 1200,
+                      "description": "ЗП"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
                 }
               }
             }
