@@ -42,6 +42,7 @@ class AuthController {
         name: user.name,
         balance: user.balance,
         isFirstLogin: user.isFirstLogin,
+        avatar: user.avatar,
       },
     });
   }

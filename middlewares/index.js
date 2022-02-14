@@ -5,3 +5,4 @@ export {
   validateSetBalance,
   validateAddTransaction,
 } from './validation/validation-functions';
+export { upload } from './upload/upload';

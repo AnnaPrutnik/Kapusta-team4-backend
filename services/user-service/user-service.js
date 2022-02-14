@@ -49,4 +49,10 @@ export class UserService {
     await this.repository.setIsFirstLogin(id);
     return newBalance;
   }
+
+  async updateUser(id) {
+    const user = await this.repository.updateUser(id);
+    return user;
+  }
+
 }
