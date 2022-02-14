@@ -45,15 +45,14 @@ class UserController {
   }
 
   async updateUser(req, res, next) {
-    const { id } = res.locals.user;
-    // const { id: userId } = req.user;
-    const user = await userService.updateUser(id, req.body);
-    if (!user) {
+    const user = res.locals.user;
+    const updateUser = await userService.updateUser(user, req.body.name);
+    if (!updateUser) {
       return next(createError(404, 'Not found'));
     }
     res
       .status(200)
-      .json({ status: 'success', code: 200, data: { user } })
+      .json({ status: 'success', code: 200, data: { updateUser } })
   }
 }
 

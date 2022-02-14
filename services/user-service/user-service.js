@@ -50,9 +50,9 @@ export class UserService {
     return newBalance;
   }
 
-  async updateUser(id) {
-    const user = await this.repository.updateUser(id);
-    return user;
+  async updateUser(user, name) {
+    const userUpdate = await this.repository.updateUser(user, name);
+    return userUpdate;
   }
 
 }
