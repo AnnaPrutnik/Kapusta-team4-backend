@@ -1,4 +1,3 @@
-import createError from 'http-errors';
 import { transactionService } from '../../services';
 
 class StatisticController {
@@ -46,12 +45,12 @@ class StatisticController {
 
   async getStatsByCategory(req, res, next) {
     const { id } = res.locals.user;
-    const { month } = req.params;
-    const { categoryId } = req.body;
+    const { month, category } = req.query;
+
     const data = await transactionService.getStatsByCategory(
       id,
       month,
-      categoryId,
+      category,
     );
     return res.status(200).json({
       status: 'success',

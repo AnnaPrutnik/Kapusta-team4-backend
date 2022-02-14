@@ -27,7 +27,7 @@ statisticRouter.get(
 );
 
 statisticRouter.get(
-  '/categories/:month',
+  '/categories',
   guard,
   statisticController.getStatsByCategory,
 );

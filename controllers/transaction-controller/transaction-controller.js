@@ -1,5 +1,4 @@
 import createError from 'http-errors';
-import moment from 'moment';
 import { transactionService } from '../../services';
 
 class TransactionController {
@@ -12,7 +11,7 @@ class TransactionController {
     }
 
     if (!Number(amount)) {
-      return next(createError(400, 'Amount should be a number'));
+      return next(createError(415, 'Amount should be a number'));
     }
 
     const transaction = {
@@ -47,7 +46,7 @@ class TransactionController {
 
   async getTransactionByDay(req, res, next) {
     const { id } = res.locals.user;
-    const { date } = req.body;
+    const { date } = req.params;
     const transactions = await transactionService.getTransactionByDay(id, date);
     return res
       .status(200)

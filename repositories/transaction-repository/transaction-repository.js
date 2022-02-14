@@ -10,7 +10,10 @@ export class TransactionRepository extends AbstractRepository {
   }
   async addTransaction(body) {
     const result = await this.model.create(body);
-    return result;
+    return result.populate({
+      path: 'categoryId',
+      select: 'category',
+    });
   }
 
   async getTransactionById(userId) {
@@ -106,7 +109,12 @@ export class TransactionRepository extends AbstractRepository {
       },
     ]);
 
-    return categories;
+    const populatedCategories = await this.model.populate(categories, {
+      path: 'categoryId',
+      select: 'category',
+    });
+
+    return populatedCategories;
   }
 
   async getTotalAmountByMonth(userId, month) {
