@@ -47,7 +47,7 @@ class TransactionController {
 
   async getTransactionByDay(req, res, next) {
     const { id } = res.locals.user;
-    const { date } = req.body;
+    const { date } = req.params;
     const transactions = await transactionService.getTransactionByDay(id, date);
     return res
       .status(200)

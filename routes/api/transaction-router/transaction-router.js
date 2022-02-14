@@ -10,7 +10,11 @@ transactionRouter.post(
   validateAddTransaction,
   transactionController.addTransaction,
 );
-transactionRouter.get('/', guard, transactionController.getTransactionByDay);
+transactionRouter.get(
+  '/:date',
+  guard,
+  transactionController.getTransactionByDay,
+);
 
 transactionRouter.delete(
   '/:transactionId',
