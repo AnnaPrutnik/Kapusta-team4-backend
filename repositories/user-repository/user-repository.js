@@ -46,12 +46,10 @@ export class UserRepository extends AbstractRepository {
     return await this.model.updateOne({_id: id}, {avatar, idAvatarCloud})
   }
 
-  async updateUser (id, body) {
-    const result = await this.model.findOneAndUpdate(
-      {
-      _id: id,
-      },
-      { ...body },
+  async updateUser (user, name) {
+    const result = await this.model.findByIdAndUpdate(
+      user.id,
+      {name },
       { new: true },
     )
     return result

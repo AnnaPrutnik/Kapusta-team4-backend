@@ -12,4 +12,4 @@ userRouter.patch(
 );
 userRouter.get('/balance', guard, userController.getBalance);
 userRouter.patch('/avatar', guard, upload.single('avatar'), userController.uploadAvatar);
-userRouter.put('/:id', [guard, validateSignUp, validateLogIn], userController.updateUser);
+userRouter.put('/', guard, userController.updateUser);
