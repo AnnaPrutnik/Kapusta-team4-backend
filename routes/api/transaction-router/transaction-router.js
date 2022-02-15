@@ -1,6 +1,10 @@
 import { Router } from 'express';
 import { transactionController } from '../../../controllers';
-import { guard, validateAddTransaction } from '../../../middlewares/';
+import {
+  guard,
+  validateAddTransaction,
+  validateId,
+} from '../../../middlewares/';
 
 export const transactionRouter = new Router();
 
@@ -19,5 +23,6 @@ transactionRouter.get(
 transactionRouter.delete(
   '/:transactionId',
   guard,
+  validateId,
   transactionController.removeTransaction,
 );
