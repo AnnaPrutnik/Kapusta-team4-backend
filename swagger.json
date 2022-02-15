@@ -123,7 +123,8 @@
                       "email": "1@mail.com",
                       "name": "userName",
                       "balance": 3600,
-                      "isFirstLogin": false
+                      "isFirstLogin": false,
+                      "avatar": "https://res.cloudinary.com/...jpg"
                     }
                   }
                 }
@@ -351,6 +352,116 @@
                 "example": {
                   "code": 400,
                   "message": "Balance should be a number"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/user/avatar": {
+      "patch": {
+        "tags": ["User"],
+        "summary": "User avatar endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Avatar received",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "success",
+                  "code": 200,
+                  "data": {
+                    "avatarUrl": "https://res.cloudinary.com/...jpg"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 401,
+                  "message": "Not authorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "api/user/": {
+      "put": {
+        "tags": ["User"],
+        "summary": "User name change endpoint",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Token issued to the current user"
+          }
+        ],
+        "security": [{ "Bearer": [] }],
+        "responses": {
+          "200": {
+            "description": "Name change received",
+            "content": {
+              "application/json": {
+                "example": {
+                  "updateUser": {
+                    "_id": "627f090a8f54h4h19b56426",
+                    "name": "New Name",
+                    "email": "1@mail.com",
+                    "password": "$2b$g335tUoYvc.QXssxO9Rry4563Ru2wc3Yaj1EFBnrXE93tg5deGG",
+                    "isVerified": false,
+                    "token": "eyJhbGciOiJg.eyJpZCI6IjYyMGI33tg4iaWOgjQ5NDkzOTV9.id3f3h3gfn4mwi3JIE2_ftF1z0Oo_CjUMc",
+                    "isFirstLogin": true,
+                    "balance": null,
+                    "idAvatarCloud": "k5fa3j50smb2v2dz4sf5hgo",
+                    "verifyToken": "604821be-7462-4179-bfb4-721aac5eb93d",
+                    "avatar": "https://res.cloudinary.com/...jpg",
+                    "createdAt": "2021-01-01T00:01:01.161Z",
+                    "updatedAt": "2022-02-02T00:02:02.845Z"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "example": {
+                  "code": 400,
+                  "message": "Not found"
                 }
               }
             }
