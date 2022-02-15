@@ -17,6 +17,8 @@ Repository for backend for team project: team 4
   - `/balance` - PATCH - энд-поинт для изменения у user-а поля isFirstLogin,
   должен быть в боди передано поле value с указанием суммы; +
   - `/balance` GET - энд-поинт обновления баланса пользователя +
+  - `/avatar` - PATCH - энд-поинт для изменения у avatar user-а;
+  - `/` PUT - энд-поинт для изменения имени у user-а +
 
 - `/api/category` (нужен заголовок с токеном!!!!)
   - `/incomes` - GET = энд поинт для получения всех категорий для Доходов +
