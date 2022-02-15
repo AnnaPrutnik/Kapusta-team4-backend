@@ -8,9 +8,7 @@ class AuthController {
       return next(createError(409, 'Email in Use'));
     }
 
-    const userName = email.split('@')[0];
-    const reqData = { name: userName, ...req.body };
-    const userData = await authService.signUpUser(reqData);
+    const userData = await authService.signUpUser(req.body);
 
     if (!userData) {
       return next(createError());
