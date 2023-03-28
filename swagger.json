@@ -13,7 +13,7 @@
   "produces": ["application/json"],
   "servers": [
     {
-      "url": "https://kapusta-app-backend.onrender.com/api-docs"
+      "url": "https://kapusta-app-backend.onrender.com/"
     }
   ],
   "tags": [
