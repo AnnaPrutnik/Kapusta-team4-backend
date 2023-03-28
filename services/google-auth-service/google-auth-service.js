@@ -1,5 +1,5 @@
 import axios from 'axios';
-import qs from 'qs';
+import queryString from 'query-string';
 
 export class GoogleAuthService {
   repository;
@@ -11,20 +11,22 @@ export class GoogleAuthService {
   async getGoogleUserToken(authCode) {
     const rootURl = 'https://oauth2.googleapis.com/token';
 
-    const options = {
+    const options = queryString.stringify({
       code: authCode,
       client_id: process.env.GOOGLE_CLIENT_ID,
       client_secret: process.env.GOOGLE_CLIENT_SECRET,
       redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URL,
       grant_type: 'authorization_code',
-    };
-
+    });
+    console.log('rootURl', rootURl);
+    console.log('options', options);
     try {
-      const { data } = await axios.post(rootURl, qs.stringify(options), {
+      const { data } = await axios.post(rootURl, options, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
+
       return data;
     } catch (error) {
       console.log('Failed to fetch Google Oauth Tokens');
