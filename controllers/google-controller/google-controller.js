@@ -5,6 +5,7 @@ class GoogleAuthController {
   async googleAuth(req, res, next) {
     try {
       const code = req.query.code;
+      console.log('code', code);
       if (!code) {
         return next(createError(401, 'Authorization code not provided!'));
       }

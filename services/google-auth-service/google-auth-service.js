@@ -26,7 +26,7 @@ export class GoogleAuthService {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-
+      console.log(data);
       return data;
     } catch (error) {
       console.log('Failed to fetch Google Oauth Tokens');
