@@ -49,6 +49,4 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 export default app;

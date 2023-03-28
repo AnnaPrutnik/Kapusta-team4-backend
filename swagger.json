@@ -13,7 +13,7 @@
   "produces": ["application/json"],
   "servers": [
     {
-      "url": "https://goit-fs35-team4-kapusta.herokuapp.com/api"
+      "url": "https://kapusta-app-backend.onrender.com/api-docs"
     }
   ],
   "tags": [
