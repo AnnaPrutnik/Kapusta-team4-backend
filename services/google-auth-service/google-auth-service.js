@@ -18,15 +18,14 @@ export class GoogleAuthService {
       redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT_URL,
       grant_type: 'authorization_code',
     });
-    console.log('rootURl', rootURl);
-    console.log('options', options);
+
     try {
       const { data } = await axios.post(rootURl, options, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       });
-      console.log(data);
+
       return data;
     } catch (error) {
       console.log('Failed to fetch Google Oauth Tokens');
